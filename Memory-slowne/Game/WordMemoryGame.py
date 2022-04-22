@@ -13,6 +13,7 @@ class WordMemoryGame:
 
     def setNewPlayer(self, player_nickname):
         self.players_dict[player_nickname] = [0, 0, 0, 0]
+        #[ilosc wygranych, ilosc gier, ilosc poprawnych odpowiedzi, ilosc wszystkich odpowiedzi]
         self.savePlayerStatistics()
         return None
 
