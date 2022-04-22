@@ -5,6 +5,6 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         
-        self.setGeometry(300, 300, 720, 480)
+        self.setGeometry(400, 400, 720, 480)
         self.setWindowTitle("Memory słowne")
     
