@@ -8,11 +8,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.setGeometry(0, 0, 1080, 720)
         self.move(self.screen().geometry().center() - self.frameGeometry().center())
         self.setWindowTitle("Memory słowne")
-
-        #self.setFixedSize(1080, 720)
         
         self._addMenuBar()
-        self._renderGame()
+        self._initUI()
     
     def _addMenuBar(self):
         menubar = self.menuBar()
@@ -32,18 +30,18 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         menubar.addAction(self.helpAction)
 
 
-    def _renderGame(self):
+    def _initUI(self):
         self.mainWidget = PyQt5.QtWidgets.QWidget()
-        self.mainWidget.setContentsMargins(15, 15, 15, 15)
+        self.mainWidget.setContentsMargins(15, 15, 0, 15)
         self.setCentralWidget(self.mainWidget)
 
         
         self.mainGridLayout = PyQt5.QtWidgets.QGridLayout(self.centralWidget())
 
-        spacerItem1 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem1, 1, 2, 1, 1)
 
-        spacerItem2 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem2, 1, 0, 1, 1)
 
         spacerItem3 = PyQt5.QtWidgets.QSpacerItem(20, 40, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
@@ -57,18 +55,18 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.gameGridLayout.setSpacing(25)
         self.mainGridLayout.addLayout(self.gameGridLayout, 1, 1, 1, 1)        
         
-        self.buttonList = [PyQt5.QtWidgets.QPushButton("Bratysława", self.centralWidget()) for i in range(0, 40)]
+        self.buttonList = [PyQt5.QtWidgets.QPushButton("Bratysława {}".format(i), self.centralWidget()) for i in range(0, 40)]
 
         for i in range(0, len(self.buttonList)):
-            self.buttonList[i].setStyleSheet("QPushButton { font-size: 20px; }")
+            self.buttonList[i].setStyleSheet("QPushButton { font-size: 20px; background-color: green; color: white; border: 2px solid black } QPushButton:hover { color: red; }")
             self.gameGridLayout.addWidget(self.buttonList[i], i // 5, i % 5)
-
         
-        self.buttonList[5].setText("Konstantyno")
+        for i in range(0, 5):
+            self.buttonList[i * 5].hide()
 
         self.timeVerticalLayout = PyQt5.QtWidgets.QVBoxLayout()
 
-        spacerItem5 = PyQt5.QtWidgets.QSpacerItem(20, 200, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Maximum)
+        spacerItem5 = PyQt5.QtWidgets.QSpacerItem(20, 200, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.timeVerticalLayout.addItem(spacerItem5)
 
         self.timerLabel1 = PyQt5.QtWidgets.QLabel("Czas:", self.centralWidget())
@@ -87,10 +85,13 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.timeVerticalLayout.addWidget(self.timerLabel1)
         self.timeVerticalLayout.addWidget(self.timerLabel2)
 
-        spacerItem6 = PyQt5.QtWidgets.QSpacerItem(20, 200, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Maximum)
+        spacerItem6 = PyQt5.QtWidgets.QSpacerItem(20, 200, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.timeVerticalLayout.addItem(spacerItem6)
 
         self.mainGridLayout.addLayout(self.timeVerticalLayout, 1, 3)
+
+        spacerItem7 = PyQt5.QtWidgets.QSpacerItem(15, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
+        self.mainGridLayout.addItem(spacerItem7, 1, 4)
 
 
     def _createMenuBarActions(self):
