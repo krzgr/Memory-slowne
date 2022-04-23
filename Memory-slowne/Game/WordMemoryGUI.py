@@ -1,12 +1,15 @@
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import functools
+import Game.WordMemoryGame
 
 class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        self.game = Game.WordMemoryGame.WordMemoryGame()
         
         self._initUI()
+        self._initGameLogic()
         self.newGame()
 
     def _initUI(self):
@@ -111,12 +114,22 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpAction = PyQt5.QtWidgets.QAction("&Pomoc", self)
         self.helpAction.triggered.connect(self._onHelpClicked)
     
+    def _onHelpClicked(self):
+        print("Clicked!")
+
+    def _initGameLogic(self):
+        #self.game.setDifficulty("easy")
+        #self.game.setGameType("???")
+        
+        #if self.game.loadWordsFromFile() == False:
+        #   Błąd
+        #if self.game.loadPlayersDataFromFile() == False:
+        #   Błąd
+
+        return True
+
     def newGame(self):
-        return None
+        self.game.shuffleWords()
 
     def _onClickButton(self, btnNum):
         print(btnNum)
-    
-
-    def _onHelpClicked(self):
-        print("Clicked!")
