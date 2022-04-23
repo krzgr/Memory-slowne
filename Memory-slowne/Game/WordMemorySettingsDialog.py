@@ -6,7 +6,6 @@ import Game.WordMemoryGUI
 class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
-        self.setModal(True)
 
         self._initUI()
         
@@ -24,7 +23,7 @@ class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
         self.verticalLayout1 = PyQt5.QtWidgets.QVBoxLayout()
         self.verticalLayout2 = PyQt5.QtWidgets.QVBoxLayout()
         self.verticalLayout3 = PyQt5.QtWidgets.QVBoxLayout()
-
+        
         self.groupBox1 = PyQt5.QtWidgets.QGroupBox("Poziom trudności")
         self.groupBox2 = PyQt5.QtWidgets.QGroupBox("Ilość słów do zapamiętania")
         self.groupBox3 = PyQt5.QtWidgets.QGroupBox("Gra na czas")
@@ -40,6 +39,10 @@ class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
 
         self.radioButton31 = PyQt5.QtWidgets.QRadioButton("Tak")
         self.radioButton32 = PyQt5.QtWidgets.QRadioButton("Nie")
+
+        self.radioButton11.setChecked(True)
+        self.radioButton21.setChecked(True)
+        self.radioButton32.setChecked(True)
 
         self.verticalLayout1.addWidget(self.radioButton11)
         self.verticalLayout1.addWidget(self.radioButton12)
@@ -63,7 +66,8 @@ class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
         self.horizontalLayout.addWidget(self.groupBox3)
 
         self.buttonBox = PyQt5.QtWidgets.QDialogButtonBox()
-        self.buttonBox.setStandardButtons(PyQt5.QtWidgets.QDialogButtonBox.Cancel|PyQt5.QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(PyQt5.QtWidgets.QDialogButtonBox.Cancel | PyQt5.QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.buttons()[1].setText("Anuluj")
         self.mainVerticalLayout.addWidget(self.buttonBox)
 
         self.buttonBox.accepted.connect(self.accept)
@@ -71,4 +75,23 @@ class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
         
     
     def _getSettings(self):
-        return None
+        
+        difficulty = "easy"
+        if self.radioButton12.isChecked():
+            difficulty = "medium"
+        elif self.radioButton13.isChecked():
+            difficulty = "hard"
+        
+        numberOfCorrectAnswers = 5
+        if self.radioButton22.isChecked():
+            numberOfCorrectAnswers = 10
+        elif self.radioButton23.isChecked():
+            numberOfCorrectAnswers = 15
+        elif self.radioButton24.isChecked():
+            numberOfCorrectAnswers = 20
+        
+        countdown = True
+        if self.radioButton32.isChecked():
+            countdown = False
+
+        return {"difficulty" : difficulty, "numberOfCorrectAnswers" : numberOfCorrectAnswers, "countdown" : countdown}

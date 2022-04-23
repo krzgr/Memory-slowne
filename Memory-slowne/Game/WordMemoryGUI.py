@@ -127,6 +127,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
     def _onSettingsDialogAccepted(self):
         print("Accepted")
+        print(self.settingsDialog._getSettings())
     
     def _onSettingsDialogRejected(self):
         print("Rejected")
