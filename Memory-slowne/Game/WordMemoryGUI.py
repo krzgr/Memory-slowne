@@ -1,5 +1,6 @@
 import PyQt5.QtWidgets
 import PyQt5.QtCore
+import functools
 
 class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
@@ -35,35 +36,33 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.mainWidget.setContentsMargins(15, 15, 0, 15)
         self.setCentralWidget(self.mainWidget)
 
-        
         self.mainGridLayout = PyQt5.QtWidgets.QGridLayout(self.centralWidget())
 
+        #QSpacerItem
         spacerItem1 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem1, 1, 2, 1, 1)
-
         spacerItem2 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem2, 1, 0, 1, 1)
-
         spacerItem3 = PyQt5.QtWidgets.QSpacerItem(20, 40, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem3, 2, 1, 1, 1)
-
         spacerItem4 = PyQt5.QtWidgets.QSpacerItem(20, 40, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem4, 0, 1, 1, 1)
 
+        #GameGridLayout
         self.gameGridLayout = PyQt5.QtWidgets.QGridLayout()
         self.gameGridLayout.setSizeConstraint(PyQt5.QtWidgets.QLayout.SetMinimumSize)
         self.gameGridLayout.setSpacing(25)
         self.mainGridLayout.addLayout(self.gameGridLayout, 1, 1, 1, 1)        
         
+        #Buttons initialization
         self.buttonList = [PyQt5.QtWidgets.QPushButton("Bratysława {}".format(i), self.centralWidget()) for i in range(0, 40)]
 
         for i in range(0, len(self.buttonList)):
+            self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
             self.buttonList[i].setStyleSheet("QPushButton { font-size: 20px; background-color: green; color: white; border: 2px solid black } QPushButton:hover { color: red; }")
             self.gameGridLayout.addWidget(self.buttonList[i], i // 5, i % 5)
-        
-        for i in range(0, 5):
-            self.buttonList[i * 5].hide()
 
+        #Time counter
         self.timeVerticalLayout = PyQt5.QtWidgets.QVBoxLayout()
 
         spacerItem5 = PyQt5.QtWidgets.QSpacerItem(20, 200, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
@@ -72,6 +71,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.timerLabel1 = PyQt5.QtWidgets.QLabel("Czas:", self.centralWidget())
         self.timerLabel2 = PyQt5.QtWidgets.QLabel("1:00", self.centralWidget())
 
+        #Time counter fonts
         font = PyQt5.QtGui.QFont()
         font.setPointSize(24)
         self.timerLabel1.setFont(font)
@@ -104,6 +104,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         self.helpAction = PyQt5.QtWidgets.QAction("&Pomoc", self)
         self.helpAction.triggered.connect(self._onHelpClicked)
+    
+    def _onClickButton(self, btnNum):
+        print(btnNum)
     
 
     def _onHelpClicked(self):
