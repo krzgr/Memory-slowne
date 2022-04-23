@@ -2,11 +2,17 @@ import PyQt5.QtWidgets
 import PyQt5.QtCore
 import functools
 import Game.WordMemoryGame
+import Game.WordMemorySettingsDialog
 
 class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.game = Game.WordMemoryGame.WordMemoryGame()
+
+        self.settingsDialog = Game.WordMemorySettingsDialog.WordMemorySettingsDialog()
+        #self.helpDialog = ...
+
+        self.settingsDialog.finished.connect(self._onSettingsDialogAccepted)
         
         self._initUI()
         self._initGameLogic()
@@ -107,6 +113,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.settingsAction = PyQt5.QtWidgets.QAction("&Ustawienia", self)
         self.exitAction = PyQt5.QtWidgets.QAction("&Wyjście", self)
         self.exitAction.triggered.connect(self.close)
+        self.settingsAction.triggered.connect(self.settingsDialog.show)
 
         self.myStatsAction = PyQt5.QtWidgets.QAction("&Moje", self)
         self.allStatsAction = PyQt5.QtWidgets.QAction("&Wszystkich", self)
@@ -117,6 +124,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def _onHelpClicked(self):
         print("Clicked!")
 
+    def _onSettingsDialogAccepted(self, r):
+        print("Accepted", r)
+
     def _initGameLogic(self):
         #self.game.setDifficulty("easy")
         #self.game.setGameType("???")
@@ -125,7 +135,6 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         #   Błąd
         #if self.game.loadPlayersDataFromFile() == False:
         #   Błąd
-
         return True
 
     def newGame(self):
