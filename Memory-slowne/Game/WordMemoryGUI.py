@@ -12,7 +12,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.settingsDialog = Game.WordMemorySettingsDialog.WordMemorySettingsDialog()
         #self.helpDialog = ...
 
-        self.settingsDialog.finished.connect(self._onSettingsDialogAccepted)
+        self.settingsDialog.accepted.connect(self._onSettingsDialogAccepted)
+        self.settingsDialog.rejected.connect(self._onSettingsDialogRejected)
         
         self._initUI()
         self._initGameLogic()
@@ -124,8 +125,11 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def _onHelpClicked(self):
         print("Clicked!")
 
-    def _onSettingsDialogAccepted(self, r):
-        print("Accepted", r)
+    def _onSettingsDialogAccepted(self):
+        print("Accepted")
+    
+    def _onSettingsDialogRejected(self):
+        print("Rejected")
 
     def _initGameLogic(self):
         #self.game.setDifficulty("easy")
