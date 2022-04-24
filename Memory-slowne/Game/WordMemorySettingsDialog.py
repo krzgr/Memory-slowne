@@ -6,11 +6,12 @@ class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
         super().__init__()
 
         self._initUI()
-
         defaultSettings = {"nickname" : "" ,"difficulty" : "easy", "numberOfCorrectAnswers" : 5, "countdown" : False}
         self._setNewSettings(defaultSettings)
         
     def _initUI(self):
+        self.msgBox = PyQt5.QtWidgets.QMessageBox(PyQt5.QtWidgets.QMessageBox.Critical, "Błąd", "Nie podano nazwy gracza", PyQt5.QtWidgets.QMessageBox.Ok)
+
         self.setWindowFlags(self.windowFlags() & ~PyQt5.QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowTitle("Ustawienia")
         self.setModal(True)
@@ -80,19 +81,19 @@ class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
     def _onSettingsRejected(self):
         if self.lastSettings["nickname"] == "":
             print("Nie został ustawiony nick")
-            #popup
-        
-        self._setNewSettings(self.lastSettings)
-        self.reject()
+            self.msgBox.exec()
+        else:
+            self._setNewSettings(self.lastSettings)
+            self.reject()
     
     def _onSettingsAccepted(self):
         self.lastSettings = self._getSettings()
         
         if self.lastSettings["nickname"] == "":
             print("Nie został ustawiony nick")
-            #popup
-        
-        self.accept()
+            self.msgBox.exec()
+        else:
+            self.accept()
 
     def _getSettings(self):
         nickname = self.nicknameTextInput.text()
