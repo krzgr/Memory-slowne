@@ -1,5 +1,5 @@
 {
     "easy" : ["kot", "pies", "lew", "krab", "kon", "slon", "mysz", "rak", "zuk", "kruk"],
     "medium" : ["krowa", "swinia", "zebra", "ryba", "kura", "delfin", "orka" , "rekin", "kogut", "osiol"],
-    "hard" : ["Bratysława"]
+    "hard" : ["szynszyla", "wieloryb", "krewetka", "osmiornica", "rosomak", "grzechotnik", "kalamarnica", "papuga", "kapucynka", "hipopotam"]
 }
