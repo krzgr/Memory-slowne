@@ -17,7 +17,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         
         self._initUI()
         self._initGameLogic()
-        self.newGame()
+        self.settingsDialog.show()
 
     def _initUI(self):
         #Window initialization
@@ -53,7 +53,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.mainGridLayout.addLayout(self.gameGridLayout, 1, 1, 1, 1)        
         
         #Buttons initialization
-        self.buttonList = [PyQt5.QtWidgets.QPushButton("Bratysława {}".format(i), self.centralWidget()) for i in range(0, 30)]
+        self.buttonList = [PyQt5.QtWidgets.QPushButton("Bratysława {}".format(i), self.centralWidget()) for i in range(0, 60)]
 
         for i in range(0, len(self.buttonList)):
             self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
@@ -131,6 +131,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     
     def _onSettingsDialogRejected(self):
         print("Rejected")
+        print(self.settingsDialog._getSettings())
 
     def _initGameLogic(self):
         #self.game.setDifficulty("easy")
