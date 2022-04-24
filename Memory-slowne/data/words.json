@@ -1,5 +1,5 @@
 {
     "easy" : ["kot", "pies", "lew", "kon", "slon", "mysz", "rak", "zuk",\ ,"Rzym", "Lwow", "Gdansk" ,"Minsk", "Praga", "Londyn", "Paryz", "Moskwa", \ ,"Jan", "Piotr", "Karol", "Krzysztof", "Anna", "Julia", "Laura", "Hanna"],
     "medium" : ["krowa", "swinia", "zebra", "kura", "delfin", "rekin", "kogut", "osiol", \ ,"Bruksela", "Amsterdam", "Luksemburg", "Andora", "Warszawa", "Lizbona", "Budapeszt", "Petersburg", \ ,"Mikolaj", "Stanislaw", "Agata", "Zuzanna", "Franciszek", "Boleslaw", "Elzbieta", "Oliwia"],
-    "hard" : ["szynszyla", "krewetka", "osmiornica", "rosomak", "grzechotnik", "kalamarnica", "kapucynka", "hipopotam", \ ,"Bratyslawa", "Sarajewo", "Gwatemala", "Antananarywa", "Mogadiszu", "Buenos Aires", "Montevideo", "Addis Abeba"]
+    "hard" : ["szynszyla", "krewetka", "osmiornica", "rosomak", "grzechotnik", "kalamarnica", "kapucynka", "hipopotam", \ ,"Bratyslawa", "Sarajewo", "Gwatemala", "Antananarywa", "Mogadiszu", "Buenos Aires", "Montevideo", "Addis Abeba", \ ,"Aleksander", "Anastazja", "Bernadette", "Esmeralda", "Maksymilian", "Arystoteles", "Mieczyslawa", "Eleanora"]
 }
