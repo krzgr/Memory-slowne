@@ -121,7 +121,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         self.myStatsAction = PyQt5.QtWidgets.QAction("&Moje", self)
         self.allStatsAction = PyQt5.QtWidgets.QAction("&Wszystkich", self)
-        self.allStatsAction.triggered.connect(self._onAllStatisticClicked)
+        self.myStatsAction.triggered.connect(self._onMyStatisticsClicked)
+        self.allStatsAction.triggered.connect(self._onAllStatisticsClicked)
 
         self.helpAction = PyQt5.QtWidgets.QAction("&Pomoc", self)
         self.helpAction.triggered.connect(self._onHelpClicked)
@@ -137,8 +138,11 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         print("Rejected")
         print(self.settingsDialog._getSettings())
     
-    def _onAllStatisticClicked(self):
-        self.statisticsDialog.show()
+    def _onMyStatisticsClicked(self):
+        self.statisticsDialog.showPlayerStatistics(self.settingsDialog._getSettings()["nickname"])
+
+    def _onAllStatisticsClicked(self):
+        self.statisticsDialog.showAllStatistics("---tutaj mają być dane graczy---")
 
     def _initGameLogic(self):
         #self.game.setDifficulty("easy")
