@@ -4,6 +4,7 @@ import functools
 import Game.WordMemoryGame
 import Game.SettingsDialog
 import Game.HelpDialog
+import Game.StatisticsDialog
 
 class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
@@ -12,6 +13,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         self.settingsDialog = Game.SettingsDialog.SettingsDialog()
         self.helpDialog = Game.HelpDialog.HelpDialog()
+        self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
 
         self.settingsDialog.accepted.connect(self._onSettingsDialogAccepted)
         self.settingsDialog.rejected.connect(self._onSettingsDialogRejected)
@@ -119,6 +121,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         self.myStatsAction = PyQt5.QtWidgets.QAction("&Moje", self)
         self.allStatsAction = PyQt5.QtWidgets.QAction("&Wszystkich", self)
+        self.allStatsAction.triggered.connect(self._onAllStatisticClicked)
 
         self.helpAction = PyQt5.QtWidgets.QAction("&Pomoc", self)
         self.helpAction.triggered.connect(self._onHelpClicked)
@@ -133,6 +136,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def _onSettingsDialogRejected(self):
         print("Rejected")
         print(self.settingsDialog._getSettings())
+    
+    def _onAllStatisticClicked(self):
+        self.statisticsDialog.show()
 
     def _initGameLogic(self):
         #self.game.setDifficulty("easy")
