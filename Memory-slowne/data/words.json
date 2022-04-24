@@ -1,5 +1,5 @@
 {
-    "easy" : ["kot", "pies", "lew", "krab", "kon", "slon", "mysz", "rak", "zuk", "kruk"],
-    "medium" : ["krowa", "swinia", "zebra", "ryba", "kura", "delfin", "orka" , "rekin", "kogut", "osiol"],
-    "hard" : ["szynszyla", "wieloryb", "krewetka", "osmiornica", "rosomak", "grzechotnik", "kalamarnica", "papuga", "kapucynka", "hipopotam"]
+    "easy" : ["kot", "pies", "lew", "kon", "slon", "mysz", "rak", "zuk",\ ,"Rzym", "Lwow", "Gdansk" ,"Minsk", "Praga", "Londyn", "Paryz", "Moskwa"],
+    "medium" : ["krowa", "swinia", "zebra", "kura", "delfin", "rekin", "kogut", "osiol"],
+    "hard" : ["szynszyla", "krewetka", "osmiornica", "rosomak", "grzechotnik", "kalamarnica", "kapucynka", "hipopotam"]
 }
