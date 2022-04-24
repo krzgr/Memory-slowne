@@ -3,6 +3,7 @@ import PyQt5.QtCore
 import functools
 import Game.WordMemoryGame
 import Game.SettingsDialog
+import Game.HelpDialog
 
 class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
@@ -10,7 +11,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.game = Game.WordMemoryGame.WordMemoryGame()
 
         self.settingsDialog = Game.SettingsDialog.SettingsDialog()
-        #self.helpDialog = ...
+        self.helpDialog = Game.HelpDialog.HelpDialog()
 
         self.settingsDialog.accepted.connect(self._onSettingsDialogAccepted)
         self.settingsDialog.rejected.connect(self._onSettingsDialogRejected)
@@ -123,7 +124,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpAction.triggered.connect(self._onHelpClicked)
     
     def _onHelpClicked(self):
-        print("Clicked!")
+        self.helpDialog.show()
 
     def _onSettingsDialogAccepted(self):
         print("Accepted")

@@ -8,4 +8,16 @@ class HelpDialog(PyQt5.QtWidgets.QDialog):
         self._initUI()
     
     def _initUI(self):
-        return None
+        self.setWindowFlags(self.windowFlags() & ~PyQt5.QtCore.Qt.WindowContextHelpButtonHint)
+        self.setWindowTitle("Pomoc")
+        self.setMinimumSize(200, 100)
+        
+        self.mainVerticalLayout = PyQt5.QtWidgets.QVBoxLayout(self)
+        
+        self.helpLabel = PyQt5.QtWidgets.QLabel("Pomoc :)")
+        self.mainVerticalLayout.addWidget(self.helpLabel)
+        
+        self.buttonBox = PyQt5.QtWidgets.QDialogButtonBox()
+        self.buttonBox.setStandardButtons(PyQt5.QtWidgets.QDialogButtonBox.Ok)
+        self.mainVerticalLayout.addWidget(self.buttonBox)
+        self.buttonBox.clicked.connect(self.close)
