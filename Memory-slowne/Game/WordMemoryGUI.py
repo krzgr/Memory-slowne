@@ -2,14 +2,14 @@ import PyQt5.QtWidgets
 import PyQt5.QtCore
 import functools
 import Game.WordMemoryGame
-import Game.WordMemorySettingsDialog
+import Game.SettingsDialog
 
 class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.game = Game.WordMemoryGame.WordMemoryGame()
 
-        self.settingsDialog = Game.WordMemorySettingsDialog.WordMemorySettingsDialog()
+        self.settingsDialog = Game.SettingsDialog.SettingsDialog()
         #self.helpDialog = ...
 
         self.settingsDialog.accepted.connect(self._onSettingsDialogAccepted)

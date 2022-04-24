@@ -1,7 +1,7 @@
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 
-class WordMemorySettingsDialog(PyQt5.QtWidgets.QDialog):
+class SettingsDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
 
