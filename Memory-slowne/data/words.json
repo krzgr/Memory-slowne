@@ -1,5 +1,5 @@
 {
-    "easy" : ["kot", "pies", "krowa"],
+    "easy" : ["kot", "pies", "lew", "krab", "kon", "slon", "mysz", "rak", "zuk", "kruk"],
     "medium" : ["Praga"],
     "hard" : ["Bratysława"]
 }
