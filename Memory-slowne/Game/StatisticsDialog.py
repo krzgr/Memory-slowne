@@ -47,10 +47,12 @@ class StatisticsDialog(PyQt5.QtWidgets.QDialog):
         self.playersListWidget.addItems([el[0] for el in self.playersData])
     
     def showAllStatistics(self):
+        self.setWindowTitle("Statystiki wszystkich graczy")
         self.playersListWidget.show()
         self.show()
     
     def showPlayerStatistics(self, nickname):
+        self.setWindowTitle("Moje statystyki")
         self.playersListWidget.hide()
         resItemList = self.playersListWidget.findItems(nickname, PyQt5.QtCore.Qt.MatchFlag.MatchExactly)
 

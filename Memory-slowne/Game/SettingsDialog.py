@@ -78,6 +78,14 @@ class SettingsDialog(PyQt5.QtWidgets.QDialog):
         self.buttonBox.accepted.connect(self._onSettingsAccepted)
         self.buttonBox.rejected.connect(self._onSettingsRejected)
     
+    def reject(self):
+        if self.lastSettings["nickname"] == "":
+            print("Nie został ustawiony nick")
+            self.msgBox.exec()
+        else:
+            self._setNewSettings(self.lastSettings)
+            super().reject()
+    
     def _onSettingsRejected(self):
         if self.lastSettings["nickname"] == "":
             print("Nie został ustawiony nick")
