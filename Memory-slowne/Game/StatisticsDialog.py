@@ -5,7 +5,7 @@ class StatisticsDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         self.playersData = []
-
+        
         self._initUI()
     
     def _initUI(self):
@@ -16,21 +16,24 @@ class StatisticsDialog(PyQt5.QtWidgets.QDialog):
         self.mainHorizontalLayout = PyQt5.QtWidgets.QHBoxLayout(self)
 
         self.playersListWidget = PyQt5.QtWidgets.QListWidget()
-
-        #-----------------------------------------
-        for i in range(30):
-            self.playersListWidget.addItem("Item {}".format(i))
         self.mainHorizontalLayout.addWidget(self.playersListWidget)
-
-        self.playersListWidget.addItem("qwerty")
-        #-----------------------------------------
 
         self.playerStatisticsGroupBox = PyQt5.QtWidgets.QGroupBox("Statystyki gracza")
         self.playerStatisticsFormLayout = PyQt5.QtWidgets.QFormLayout()
 
-        #------------Statystyki gracza------------
-        #
-        #-----------------------------------------
+        self.numberOfGamesLabel = PyQt5.QtWidgets.QLabel("Liczba gier")
+        self.numberOfGamesField = PyQt5.QtWidgets.QLabel()
+        self.numberOfWinGamesLabel = PyQt5.QtWidgets.QLabel("Liczba wygranych gier")
+        self.numberOfWinGamesField = PyQt5.QtWidgets.QLabel()
+        self.numberOfAllAnswersLabel = PyQt5.QtWidgets.QLabel("Liczba wszystkich odpowiedzi")
+        self.numberOfAllAnswersField = PyQt5.QtWidgets.QLabel()
+        self.numberOfCorrectAnswersLabel = PyQt5.QtWidgets.QLabel("Liczba poprawnych odpowiedzi")
+        self.numberOfCorrectAnswersField = PyQt5.QtWidgets.QLabel()
+
+        self.playerStatisticsFormLayout.addRow(self.numberOfGamesLabel, self.numberOfGamesField)
+        self.playerStatisticsFormLayout.addRow(self.numberOfWinGamesLabel, self.numberOfWinGamesField)
+        self.playerStatisticsFormLayout.addRow(self.numberOfAllAnswersLabel, self.numberOfAllAnswersField)
+        self.playerStatisticsFormLayout.addRow(self.numberOfCorrectAnswersLabel, self.numberOfCorrectAnswersField)
 
         self.playerStatisticsGroupBox.setLayout(self.playerStatisticsFormLayout)
         self.mainHorizontalLayout.addWidget(self.playerStatisticsGroupBox)
@@ -45,9 +48,6 @@ class StatisticsDialog(PyQt5.QtWidgets.QDialog):
     
     def showAllStatistics(self):
         self.playersListWidget.show()
-        
-
-
         self.show()
     
     def showPlayerStatistics(self, nickname):
@@ -56,6 +56,20 @@ class StatisticsDialog(PyQt5.QtWidgets.QDialog):
 
         if len(resItemList) > 0:
             self.playersListWidget.setCurrentItem(resItemList[0])
-    
+            self._onItemClicked(resItemList[0])
+        
+        self.show()
+
     def _onItemClicked(self, item):
-        print(item.text())
+        self.numberOfWinGamesField.clear()
+        self.numberOfGamesField.clear()
+        self.numberOfCorrectAnswersField.clear()
+        self.numberOfAllAnswersField.clear()
+        
+        for x in self.playersData:
+            if x[0] == item.text():
+                self.numberOfWinGamesField.setText(str(x[1][0]))
+                self.numberOfGamesField.setText(str(x[1][1]))
+                self.numberOfCorrectAnswersField.setText(str(x[1][2]))
+                self.numberOfAllAnswersField.setText(str(x[1][3]))
+                return
