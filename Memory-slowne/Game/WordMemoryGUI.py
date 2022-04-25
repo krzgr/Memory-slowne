@@ -142,7 +142,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.statisticsDialog.showPlayerStatistics(self.settingsDialog._getSettings()["nickname"])
 
     def _onAllStatisticsClicked(self):
-        self.statisticsDialog.showAllStatistics("---tutaj mają być dane graczy---")
+        self.statisticsDialog.showAllStatistics()
 
     def _initGameLogic(self):
         #self.game.setDifficulty("easy")
