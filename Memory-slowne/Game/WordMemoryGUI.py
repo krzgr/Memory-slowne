@@ -15,18 +15,22 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpDialog = Game.HelpDialog.HelpDialog()
         self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
 
-        self.settingsDialog.accepted.connect(self._onSettingsDialogAccepted)
-        self.settingsDialog.rejected.connect(self._onSettingsDialogRejected)
-        
         self._initUI()
-        self._initGameLogic()
-        self.settingsDialog.show()
+
+        if self._initGameLogic() == False:
+            self.close()
+        else:
+            self.settingsDialog.show()
 
     def _initUI(self):
         #Window initialization
         self.setGeometry(0, 0, 1080, 720)
         self.move(self.screen().geometry().center() - self.frameGeometry().center())
         self.setWindowTitle("Memory słowne")
+
+        #Other windows event connection 
+        self.settingsDialog.accepted.connect(self._onSettingsDialogAccepted)
+        self.settingsDialog.rejected.connect(self._onSettingsDialogRejected)
 
         #Menu bar initialization
         self._addMenuBar()
@@ -131,8 +135,17 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpDialog.show()
 
     def _onSettingsDialogAccepted(self):
+        settings = self.settingsDialog._getSettings()
         print("Accepted")
-        print(self.settingsDialog._getSettings())
+        print(settings)
+        self.game.setDifficulty(settings["difficulty"])
+        self.game.setNickname(settings["nickname"])
+        #self.game.setNumberOfCorrectAnswears(settings["numberOfCorrectAnswers"])
+
+        if not self.game.shuffleWords():
+            self.close()
+        print(self.game.getAllAnswers())
+        print(self.game.getCorrectAnswers())
     
     def _onSettingsDialogRejected(self):
         print("Rejected")
@@ -144,15 +157,11 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def _onAllStatisticsClicked(self):
         self.statisticsDialog.showAllStatistics()
 
-    def _initGameLogic(self):
-        #self.game.setDifficulty("easy")
-        #self.game.setGameType("???")
-        
-        #if self.game.loadWordsFromFile() == False:
-        #   Błąd
-        #if self.game.loadPlayersDataFromFile() == False:
-        #   Błąd
-        return True
+    def _initGameLogic(self):        
+        if self.game.loadWordsFromFile() and self.game.loadPlayersDataFromFile():
+            return True
+        else:
+            return False
 
     def newGame(self):
         self.game.shuffleWords()
