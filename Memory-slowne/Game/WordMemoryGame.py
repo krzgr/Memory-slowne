@@ -1,38 +1,84 @@
 import json
+import random
 
 class WordMemoryGame:
     def __init__(self):
-        pass
+        self.difficulty = "easy"
+        self.wordsList = []
+        self.numberOfCorrectAnswers = 5
+        self.numberOfAllAnswers = 3 * self.numberOfCorrectAnswers
 
+    # funkcje typu load
     def loadWordsFromFile(self):
-        return None
-    
+        try:
+            wordsFile = open("../data/words.json", "r")
+            self.wordsDict = json.loads(wordsFile.read())  # wszystkie słowa wpisane z pliku
+        except FileNotFoundError:
+            return False
+        except Exception:
+            wordsFile.close()
+            return False
+        return True
+
     def loadPlayersDataFromFile(self):
+        try:
+            playersFile = open("../data/players.json", "r")
+            self.playersDict = json.loads(playersFile.read())
+        except FileNotFoundError:
+            return False
+        except Exception:
+            playersFile.close()
+            return False
+        return True
+
+    def setDifficulty(self, diffInput):
+        self.difficulty = diffInput
+        self.wordsList = self.wordsDict[self.difficulty]
         return None
 
-    def setGameType(self):
-        return None
-    
-    def setDifficulty(self):
-        return None
-    
     def shuffleWords(self):
-        return None
-    
+        try:
+            self.allAnswears = random.sample(self.wordsList, self.numberOfAllAnswers) #klikalne odpowiedzi
+            self.correctAnswers = random.sample(self.allAnswears, self.numberOfCorrectAnswers) # poprawne odpowiedzi wylosowane
+        except Exception:
+            return False
+        return True
+
+
+    # funckje typu get
     def getAllAnswers(self):
-        return None
+        return self.allAnswers
 
     def getCorrectAnswers(self):
-        return None
-    
+        return self.correctAnswers
+
     def getNickname(self):
-        return None
-    
-    def setNickname(self):
-        return None
-    
-    def getPlayerStatistics(self):
-        return None
-    
+        return self.nickname
+
+    def getAllPlayersStatistics(self):
+        return [(elem, self.playersDict[elem]) for elem in self.playersDict]
+
+    # funckje z gracz
+    def setNickname(self, nicknameInput):
+        if(nicknameInput in self.playersDict):
+            self.nickname = nicknameInput
+        else:
+            return self.addNewPlayer(nicknameInput)
+        return True
+
+    def addNewPlayer(self, playerNickname):
+        self.playersDict[playerNickname] = [0, 0, 0, 0]
+        return self.savePlayerStatistics()
+
     def savePlayerStatistics(self):
-        return None
+        try:
+            playersFile = open("../data/players.json", "w")
+            jsonDict = json.dumps(self.playersDict)
+        except FileNotFoundError:
+            return False
+        except Exception:
+            playersFile.close()
+            return False
+        else:
+            playersFile.write(jsonDict)
+        return True
