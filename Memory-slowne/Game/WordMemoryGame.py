@@ -7,6 +7,10 @@ class WordMemoryGame:
         self.wordsList = []
         self.numberOfCorrectAnswers = 5
         self.numberOfAllAnswers = 3 * self.numberOfCorrectAnswers
+        self.playersDict = {}
+        self.wordsDict = {}
+        self.allAnswears = []
+        self.correctAnswers = []
 
     # funkcje typu load
     def loadWordsFromFile(self):
