@@ -55,9 +55,12 @@ class WordMemoryGame:
     def getNickname(self):
         return self.nickname
 
-    #def getAllPlayersStatistics(self):
-     #   playersStatsList = []
-      #  return playersStatsList
+    def getAllPlayersStatistics(self):
+        self.playersStatsList = []
+        for elem in self.playersDict:
+            tuple = (elem, self.playersDict[elem])
+            self.playersStatsList.append(tuple)
+        return playersStatsList
 
     # funckje z gracz
     def setNickname(self, nicknameInput):
