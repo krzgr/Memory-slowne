@@ -9,13 +9,13 @@ class WordMemoryGame:
         self.numberOfAllAnswers = 3 * self.numberOfCorrectAnswers
         self.playersDict = {}
         self.wordsDict = {}
-        self.allAnswears = []
+        self.allAnswers = []
         self.correctAnswers = []
 
     # funkcje typu load
     def loadWordsFromFile(self):
         try:
-            wordsFile = open("../data/words.json", "r")
+            wordsFile = open("data/words.json", "r")
             self.wordsDict = json.loads(wordsFile.read())  # wszystkie słowa wpisane z pliku
         except FileNotFoundError:
             return False
@@ -26,7 +26,7 @@ class WordMemoryGame:
 
     def loadPlayersDataFromFile(self):
         try:
-            playersFile = open("../data/players.json", "r")
+            playersFile = open("data/players.json", "r")
             self.playersDict = json.loads(playersFile.read())
         except FileNotFoundError:
             return False
@@ -42,8 +42,8 @@ class WordMemoryGame:
 
     def shuffleWords(self):
         try:
-            self.allAnswears = random.sample(self.wordsList, self.numberOfAllAnswers) #klikalne odpowiedzi
-            self.correctAnswers = random.sample(self.allAnswears, self.numberOfCorrectAnswers) # poprawne odpowiedzi wylosowane
+            self.allAnswers = random.sample(self.wordsList, self.numberOfAllAnswers) #klikalne odpowiedzi
+            self.correctAnswers = random.sample(self.allAnswers, self.numberOfCorrectAnswers) # poprawne odpowiedzi wylosowane
         except Exception:
             return False
         return True
@@ -64,13 +64,12 @@ class WordMemoryGame:
 
     # funckje z gracz
     def setNickname(self, nicknameInput):
-        if(nicknameInput in self.playersDict):
-            self.nickname = nicknameInput
-        else:
+        self.nickname = nicknameInput
+        if nicknameInput not in self.playersDict:
             return self.addNewPlayer(nicknameInput)
         return True
 
-    def setNumberOfCorrectAnswears(self, num):
+    def setNumberOfCorrectAnswers(self, num):
         self.numberOfAllAnswers = num
         self.numberOfAllAnswers = 3 * self.numberOfCorrectAnswers
 
@@ -80,7 +79,7 @@ class WordMemoryGame:
 
     def savePlayerStatistics(self):
         try:
-            playersFile = open("../data/players.json", "w")
+            playersFile = open("data/players.json", "w")
             jsonDict = json.dumps(self.playersDict)
         except FileNotFoundError:
             return False
