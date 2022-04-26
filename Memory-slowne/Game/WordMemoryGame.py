@@ -70,6 +70,10 @@ class WordMemoryGame:
             return self.addNewPlayer(nicknameInput)
         return True
 
+    def setNumberOfCorrectAnswears(self, num):
+        self.numberOfAllAnswers = num
+        self.numberOfAllAnswers = 3 * self.numberOfCorrectAnswers
+
     def addNewPlayer(self, playerNickname):
         self.playersDict[playerNickname] = [0, 0, 0, 0]
         return self.savePlayerStatistics()
