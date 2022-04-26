@@ -10,24 +10,19 @@ class WordMemoryGame:
 
     def loadWordsFromFile(self):
         try:
-            words_file = open("words.json", "r")
+            wordsFile = open("words.json", "r")
+            self.words_dict = json.loads(wordsFile.read())  # wszystkie słowa wpisane z pliku
         except FileNotFoundError:
             return False
         except Exception:
+            wordsFile.close()
             return False
-        else:
-            try:
-                self.words_dict = json.loads(words_file.read())  # wszystkie słowa wpisane z pliku
-            except Exception:
-                return False
-            finally:
-                words_file.close()
-            return True
+        return True
 
-    def setNewPlayer(self, player_nickname):
+    def addNewPlayer(self, player_nickname):
         self.players_dict[player_nickname] = [0, 0, 0, 0]
-        self.savePlayerStatistics()
-        return None
+        return self.savePlayerStatistics()
+
 
     def loadPlayersDataFromFile(self):
         try:
@@ -53,18 +48,13 @@ class WordMemoryGame:
         self.words_list = self.words_dict[self.difficulty]
         return None
 
-    def setNumberOfAnswears(self, num):
-        self.numberOfAllAnswears = num
-        return True
-
     def shuffleWords(self):
-        self.all_answears = random.sample(self.words_list, self.numberOfAllAnswears)
         try:
-            self.all_answears = random.sample(self.words_list, self.numberOfAllAnswears)
+            self.allAnswears = random.sample(self.words_list, self.numberOfAllAnswears) #klikalne odpowiedzi
+            self.correctAnswers = random.sample(self.allAnswears, self.numberOfCorrectAnswers) # poprawne odpowiedzi wylosowane
         except Exception:
             return False
-        else:
-            return True
+        return True
 
     def getAllAnswers(self):
         return self.all_answears
@@ -89,17 +79,10 @@ class WordMemoryGame:
     def savePlayerStatistics(self):
         try:
             file = open("players.json", "w")
+            json_dict = json.dumps(self.players_dict)
         except FileNotFoundError:
             return False
         except Exception:
+            file.close()
             return False
-        else:
-            try:
-                json_dict = json.dumps(self.players_dict)
-            except Exception:
-                return False
-            else:
-                file.write(json_dict)
-            finally:
-                file.close()
-            return True
+        return True
