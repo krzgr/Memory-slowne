@@ -70,7 +70,7 @@ class WordMemoryGame:
         return True
 
     def setNumberOfCorrectAnswers(self, num):
-        self.numberOfAllAnswers = num
+        self.numberOfCorrectAnswers = num
         self.numberOfAllAnswers = 3 * self.numberOfCorrectAnswers
 
     def addNewPlayer(self, playerNickname):
