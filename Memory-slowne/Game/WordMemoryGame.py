@@ -16,9 +16,6 @@ class WordMemoryGame:
         self.correctAnswers = []
         self.playerSelectedWords = []
 
-    def startNewGame(self):
-        self.shuffleWords()
-
     def playerWin(self):
         for elem in self.playerSelectedWords:
             if elem not in self.correctAnswers:
@@ -124,4 +121,3 @@ class WordMemoryGame:
 
     def addPlayerAnswer(self, word):
         self.playerSelectedWords.append(word)
-        #return True
