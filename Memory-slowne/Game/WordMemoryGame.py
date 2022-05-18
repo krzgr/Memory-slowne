@@ -121,3 +121,6 @@ class WordMemoryGame:
 
     def addPlayerAnswer(self, word):
         self.playerSelectedWords.append(word)
+    
+    def isGameFinished(self):
+        return len(self.playerSelectedWords) >= self.numberOfCorrectAnswers

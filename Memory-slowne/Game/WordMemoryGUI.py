@@ -11,7 +11,6 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.game = Game.WordMemoryGame.WordMemoryGame()
-        self.resultList = []
         self.settingsDialog = Game.SettingsDialog.SettingsDialog()
         self.helpDialog = Game.HelpDialog.HelpDialog()
         self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
@@ -165,7 +164,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             return False
 
     def newGame(self):
-        self.resultList = []
+        self.game.shuffleWords()
+        
         i = 0
         for x in self.game.getAllAnswers():
             self.buttonList[i].setText(self.tr(x))
@@ -181,10 +181,12 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             i += 1
 
     def _onClickButton(self, btnNum):
-        self.resultList.append(self.buttonList[btnNum].text())
+        self.game.addPlayerAnswer(self.buttonList[btnNum].text())
         
-        if len(self.resultList) >= len(self.game.getCorrectAnswers()):
-            print(self.resultList)
-            print(self.game.getCorrectAnswers())
-            print("czy takie same:", self.resultList == self.game.getCorrectAnswers())
-            self.resultList.clear()
+        if self.game.isGameFinished():
+            if self.game.playerWin():
+                print("Wygrana")
+            else:
+                print("Przegrana")
+            
+            self.newGame()
