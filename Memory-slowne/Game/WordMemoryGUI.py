@@ -1,3 +1,4 @@
+from ctypes.wintypes import PINT
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import functools
@@ -10,7 +11,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.game = Game.WordMemoryGame.WordMemoryGame()
-
+        self.resultList = []
         self.settingsDialog = Game.SettingsDialog.SettingsDialog()
         self.helpDialog = Game.HelpDialog.HelpDialog()
         self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
@@ -42,15 +43,15 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.mainGridLayout = PyQt5.QtWidgets.QGridLayout(self.centralWidget())
 
         #QSpacerItem
-        spacerItem1 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
         self.mainGridLayout.addItem(spacerItem1, 1, 2, 1, 1)
-        spacerItem2 = PyQt5.QtWidgets.QSpacerItem(40, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
+        spacerItem2 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
         self.mainGridLayout.addItem(spacerItem2, 1, 0, 1, 1)
-        spacerItem3 = PyQt5.QtWidgets.QSpacerItem(20, 40, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem3, 2, 1, 1, 1)
-        spacerItem4 = PyQt5.QtWidgets.QSpacerItem(20, 40, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
+        spacerItem4 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem4, 0, 1, 1, 1)
-        spacerItem5 = PyQt5.QtWidgets.QSpacerItem(15, 20, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
+        spacerItem5 = PyQt5.QtWidgets.QSpacerItem(15, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
         self.mainGridLayout.addItem(spacerItem5, 1, 4)
 
         #GameGridLayout
@@ -60,7 +61,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.mainGridLayout.addLayout(self.gameGridLayout, 1, 1, 1, 1)        
         
         #Buttons initialization
-        self.buttonList = [PyQt5.QtWidgets.QPushButton("Bratysława {}".format(i), self.centralWidget()) for i in range(0, 60)]
+        self.buttonList = [PyQt5.QtWidgets.QPushButton("", self.centralWidget()) for i in range(0, 60)]
 
         for i in range(0, len(self.buttonList)):
             self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
@@ -140,12 +141,12 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         print(settings)
         self.game.setDifficulty(settings["difficulty"])
         self.game.setNickname(settings["nickname"])
-        #self.game.setNumberOfCorrectAnswears(settings["numberOfCorrectAnswers"])
+        self.game.setNumberOfCorrectAnswers(settings["numberOfCorrectAnswers"])
 
         if not self.game.shuffleWords():
             self.close()
-        print(self.game.getAllAnswers())
-        print(self.game.getCorrectAnswers())
+        else:
+            self.newGame()
     
     def _onSettingsDialogRejected(self):
         print("Rejected")
@@ -164,7 +165,26 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             return False
 
     def newGame(self):
-        self.game.shuffleWords()
+        self.resultList = []
+        i = 0
+        for x in self.game.getAllAnswers():
+            self.buttonList[i].setText(self.tr(x))
+            self.buttonList[i].show()
+            i += 1
+        
+        print("Correct: ", self.game.getCorrectAnswers())
+
+        buttonListLen = len(self.buttonList)
+
+        while i < buttonListLen:
+            self.buttonList[i].hide()
+            i += 1
 
     def _onClickButton(self, btnNum):
-        print(btnNum)
+        self.resultList.append(self.buttonList[btnNum].text())
+        
+        if len(self.resultList) >= len(self.game.getCorrectAnswers()):
+            print(self.resultList)
+            print(self.game.getCorrectAnswers())
+            print("czy takie same:", self.resultList == self.game.getCorrectAnswers())
+            self.resultList.clear()

@@ -15,7 +15,7 @@ class WordMemoryGame:
     # funkcje typu load
     def loadWordsFromFile(self):
         try:
-            wordsFile = open("data/words.json", "r")
+            wordsFile = open("data/words.json", "r", encoding="utf-8")
             self.wordsDict = json.loads(wordsFile.read())  # wszystkie słowa wpisane z pliku
         except FileNotFoundError:
             return False
@@ -26,7 +26,7 @@ class WordMemoryGame:
 
     def loadPlayersDataFromFile(self):
         try:
-            playersFile = open("data/players.json", "r")
+            playersFile = open("data/players.json", "r", encoding="utf-8")
             self.playersDict = json.loads(playersFile.read())
         except FileNotFoundError:
             return False
@@ -79,7 +79,7 @@ class WordMemoryGame:
 
     def savePlayerStatistics(self):
         try:
-            playersFile = open("data/players.json", "w")
+            playersFile = open("data/players.json", "w", encoding="utf-8")
             jsonDict = json.dumps(self.playersDict)
         except FileNotFoundError:
             return False
