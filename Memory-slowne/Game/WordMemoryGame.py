@@ -1,7 +1,10 @@
+from typing import Any
+
 import json
 import random
 
 class WordMemoryGame:
+
     def __init__(self):
         self.difficulty = "easy"
         self.wordsList = []
@@ -11,6 +14,16 @@ class WordMemoryGame:
         self.wordsDict = {}
         self.allAnswers = []
         self.correctAnswers = []
+        self.playerSelectedWords = []
+
+    def playerWin(self):
+        for elem in self.playerSelectedWords:
+            if elem not in self.correctAnswers:
+                return False
+        return True
+
+    def isGameFinished(self):
+        pass
 
     # funkcje typu load
     def loadWordsFromFile(self):
@@ -44,8 +57,14 @@ class WordMemoryGame:
         try:
             self.allAnswers = random.sample(self.wordsList, self.numberOfAllAnswers) #klikalne odpowiedzi
             self.correctAnswers = random.sample(self.allAnswers, self.numberOfCorrectAnswers) # poprawne odpowiedzi wylosowane
+
+            if (len(self.playerSelectedWords) != 0):
+                (self.playersDict[self.nickname])[1] += 1
+
         except Exception:
             return False
+
+        self.playerSelectedWords = []
         return True
 
 
@@ -61,6 +80,16 @@ class WordMemoryGame:
 
     def getAllPlayersStatistics(self):
         return [(elem, self.playersDict[elem]) for elem in self.playersDict]
+
+    def getNumberOfCorrectAnswers(self):
+        return self.numberOfCorrectAnswers
+
+    def getNumberOfAllAnswers(self):
+        return self.numberOfAllAnswers
+
+    # wzór: 5 * 2^(self.numberOfCorrectAnswers // 5)
+    def getDurationOfLookingAtCorrectAnswersAsSeconds(self):
+        return 5 * pow(2, self.numberOfCorrectAnswers // 5)
 
     # funckje z gracz
     def setNickname(self, nicknameInput):
@@ -89,3 +118,6 @@ class WordMemoryGame:
         else:
             playersFile.write(jsonDict)
         return True
+
+    def addPlayerAnswer(self, word):
+        self.playerSelectedWords.append(word)
