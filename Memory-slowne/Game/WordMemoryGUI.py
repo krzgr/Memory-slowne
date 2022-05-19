@@ -15,8 +15,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpDialog = Game.HelpDialog.HelpDialog()
         self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
 
-        self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; } QPushButton:hover { color: red; }"
-        self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; }"
+        self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; min-width: 100px; } QPushButton:hover { color: red; }"
+        self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; min-width: 100px; }"
 
         self._initUI()
 
@@ -151,6 +151,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.game.setDifficulty(settings["difficulty"])
         self.game.setNickname(settings["nickname"])
         self.game.setNumberOfCorrectAnswers(settings["numberOfCorrectAnswers"])
+
+        self.statisticsDialog.updatePlayersStatistics(self.game.getAllPlayersStatistics())
 
         if not self.game.shuffleWords():
             self.close()
