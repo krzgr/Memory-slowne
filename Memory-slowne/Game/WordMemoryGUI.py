@@ -17,6 +17,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; min-width: 100px; } QPushButton:hover { color: red; }"
         self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; min-width: 100px; }"
+        self.startButtonStyleSheet = "QPushButton { font-size: 28px; padding: 5px; background-color: green; color: white; border-radius: 5px; } QPushButton:hover { background-color: red; } "
 
         self._initUI()
 
@@ -87,6 +88,16 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         self.timerLabel1 = PyQt5.QtWidgets.QLabel("Czas:", self.centralWidget())
         self.timerLabel2 = PyQt5.QtWidgets.QLabel("0:00", self.centralWidget())
+
+        self.timer = PyQt5.QtCore.QTimer(self.centralWidget())
+        self.timer.setSingleShot(True)
+
+        #Start game button
+        self.startButton = PyQt5.QtWidgets.QPushButton("Start", self.centralWidget())
+        self.startButton.setStyleSheet(self.startButtonStyleSheet)
+        self.startButton.setCursor(PyQt5.QtGui.QCursor(PyQt5.QtCore.Qt.PointingHandCursor))
+        self.startButton.clicked.connect(self._onStartButtonClicked)
+        self.timeVerticalLayout.addWidget(self.startButton)
 
         #Time counter fonts
         font = PyQt5.QtGui.QFont()
@@ -176,14 +187,21 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             return False
 
     def newGame(self):
+        self.startButton.show()
+        
+        self.timer.timeout.connect(lambda : True)
+
+        if self.settingsDialog._getSettings()["countdown"]:
+            self._countdown(self.game.getDurationOfLookingAtCorrectAnswersAsSeconds())
+        
         self.game.shuffleWords()
         for i in range(len(self.buttonList)):
-            self.buttonList[i].clicked.disconnect() 
-            self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
+            self.buttonList[i].clicked.disconnect()
+            self.buttonList[i].clicked.connect(lambda : None)
             self.buttonList[i].setStyleSheet(self.btnClickableStyleSheet)
         
         i = 0
-        for x in self.game.getAllAnswers():
+        for x in self.game.getCorrectAnswers():
             self.buttonList[i].setText(self.tr(x))
             self.buttonList[i].show()
             i += 1
@@ -212,3 +230,24 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
                 print("Przegrana!")
             
             self.newGame()
+    
+    def _onStartButtonClicked(self):
+        self.startButton.hide()
+        self.timer.stop()
+        self.timerLabel2.setText("0:00")
+
+        for i, x in enumerate(self.game.getAllAnswers()):
+            self.buttonList[i].clicked.disconnect() 
+            self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
+            self.buttonList[i].setText(self.tr(x))
+            self.buttonList[i].show()
+    
+    def _countdown(self, numberOfSeconds):
+        self.timerLabel2.setText("{}:{:02d}".format(numberOfSeconds // 60, numberOfSeconds % 60))
+
+        self.timer.disconnect()
+        if numberOfSeconds > 0:
+            self.timer.timeout.connect(functools.partial(self._countdown, numberOfSeconds - 1))
+            self.timer.start(1000)
+        else:
+            self._onStartButtonClicked()
