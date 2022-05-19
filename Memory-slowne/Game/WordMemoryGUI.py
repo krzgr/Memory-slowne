@@ -15,8 +15,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpDialog = Game.HelpDialog.HelpDialog()
         self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
 
-        self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; min-width: 100px; } QPushButton:hover { color: red; }"
-        self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; min-width: 100px; }"
+        self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; min-width: 130px; } QPushButton:hover { color: red; }"
+        self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; min-width: 130px; }"
         self.startButtonStyleSheet = "QPushButton { font-size: 28px; padding: 5px; background-color: green; color: white; border-radius: 5px; } QPushButton:hover { background-color: red; } "
         self.btnCorrectAnswerStyleSheet = "QPushButton { font-size: 20px; background-color: green; color: white; border-radius: 4px; padding: 5px; min-width: 100px; }"
 
