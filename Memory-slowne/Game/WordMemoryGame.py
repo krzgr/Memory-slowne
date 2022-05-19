@@ -135,3 +135,6 @@ class WordMemoryGame:
     
     def isGameFinished(self):
         return len(self.playerSelectedWords) >= self.numberOfCorrectAnswers
+    
+    def getPlayerSelectedWords(self):
+        return self.playerSelectedWords

@@ -18,6 +18,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; min-width: 100px; } QPushButton:hover { color: red; }"
         self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; min-width: 100px; }"
         self.startButtonStyleSheet = "QPushButton { font-size: 28px; padding: 5px; background-color: green; color: white; border-radius: 5px; } QPushButton:hover { background-color: red; } "
+        self.btnCorrectAnswerStyleSheet = "QPushButton { font-size: 20px; background-color: green; color: white; border-radius: 4px; padding: 5px; min-width: 100px; }"
 
         self._initUI()
 
@@ -188,11 +189,15 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
     def newGame(self):
         self.startButton.show()
+        self.timerLabel2.setText("0:00")
         
+        self.timer.stop()
+        try: self.timer.disconnect()
+        except Exception: pass
         self.timer.timeout.connect(lambda : True)
 
         if self.settingsDialog._getSettings()["countdown"]:
-            self._countdown(self.game.getDurationOfLookingAtCorrectAnswersAsSeconds())
+            self._gameCountdown(self.game.getDurationOfLookingAtCorrectAnswersAsSeconds())
         
         self.game.shuffleWords()
         for i in range(len(self.buttonList)):
@@ -228,8 +233,13 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
                 print("Wygrana!")
             else:
                 print("Przegrana!")
+            self.showCorrectAnswers()
             
-            self.newGame()
+            self.timer.stop()
+            try: self.timer.disconnect()
+            except Exception: pass
+            self.timer.timeout.connect(self.newGame)
+            self.timer.start(5000)
     
     def _onStartButtonClicked(self):
         self.startButton.hide()
@@ -242,12 +252,21 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             self.buttonList[i].setText(self.tr(x))
             self.buttonList[i].show()
     
-    def _countdown(self, numberOfSeconds):
+    def _gameCountdown(self, numberOfSeconds):
         self.timerLabel2.setText("{}:{:02d}".format(numberOfSeconds // 60, numberOfSeconds % 60))
 
         self.timer.disconnect()
         if numberOfSeconds > 0:
-            self.timer.timeout.connect(functools.partial(self._countdown, numberOfSeconds - 1))
+            self.timer.timeout.connect(functools.partial(self._gameCountdown, numberOfSeconds - 1))
             self.timer.start(1000)
         else:
             self._onStartButtonClicked()
+    
+    def showCorrectAnswers(self):
+        for i in range(self.game.getNumberOfAllAnswers()):
+            self.buttonList[i].clicked.disconnect()
+            self.buttonList[i].clicked.connect(lambda : None)
+            
+            text = self.buttonList[i].text()
+            if text in self.game.getCorrectAnswers() and text not in self.game.getPlayerSelectedWords():
+                self.buttonList[i].setStyleSheet(self.btnCorrectAnswerStyleSheet)
