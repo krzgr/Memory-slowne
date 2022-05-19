@@ -55,11 +55,22 @@ class WordMemoryGame:
 
     def shuffleWords(self):
         try:
+            if len(self.playerSelectedWords) != 0:
+                self.playersDict[self.nickname][1] += 1 #ilość wszystkich gier
+                self.playersDict[self.nickname][3] += len(self.playerSelectedWords) #ilość wszystkich odpowiedzi
+
+                if self.playerWin():
+                    self.playersDict[self.nickname][0] += 1 #ilość wygranych gier
+                
+                numberOfCorrectPlayerAnswers = 0
+                for elem in self.playerSelectedWords:
+                    if elem in self.correctAnswers:
+                        numberOfCorrectPlayerAnswers += 1
+                self.playersDict[self.nickname][2] += numberOfCorrectPlayerAnswers #ilość poprawnych odpowiedzi
+
+            self.savePlayerStatistics()
             self.allAnswers = random.sample(self.wordsList, self.numberOfAllAnswers) #klikalne odpowiedzi
             self.correctAnswers = random.sample(self.allAnswers, self.numberOfCorrectAnswers) # poprawne odpowiedzi wylosowane
-
-            if (len(self.playerSelectedWords) != 0):
-                (self.playersDict[self.nickname])[1] += 1
 
         except Exception:
             return False

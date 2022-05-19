@@ -42,9 +42,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.mainGridLayout = PyQt5.QtWidgets.QGridLayout(self.centralWidget())
 
         #QSpacerItem
-        spacerItem1 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Maximum)
         self.mainGridLayout.addItem(spacerItem1, 1, 2, 1, 1)
-        spacerItem2 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Expanding, PyQt5.QtWidgets.QSizePolicy.Maximum)
         self.mainGridLayout.addItem(spacerItem2, 1, 0, 1, 1)
         spacerItem3 = PyQt5.QtWidgets.QSpacerItem(0, 0, PyQt5.QtWidgets.QSizePolicy.Minimum, PyQt5.QtWidgets.QSizePolicy.Expanding)
         self.mainGridLayout.addItem(spacerItem3, 2, 1, 1, 1)
@@ -57,7 +57,15 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.gameGridLayout = PyQt5.QtWidgets.QGridLayout()
         self.gameGridLayout.setSizeConstraint(PyQt5.QtWidgets.QLayout.SetMinimumSize)
         self.gameGridLayout.setSpacing(15)
-        self.mainGridLayout.addLayout(self.gameGridLayout, 1, 1, 1, 1)        
+        
+        for i in range(0, 5):
+            self.gameGridLayout.setColumnStretch(i, 1)
+            self.gameGridLayout.setRowStretch(i, 1)
+        
+        for i in range(3):
+            self.mainGridLayout.setRowStretch(i, 1)
+    
+        self.mainGridLayout.addLayout(self.gameGridLayout, 1, 1, 1, 1)
         
         #Buttons initialization
         self.buttonList = [PyQt5.QtWidgets.QPushButton("", self.centralWidget()) for i in range(0, 60)]
@@ -185,8 +193,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         
         if self.game.isGameFinished():
             if self.game.playerWin():
-                print("Wygrana")
+                print("Wygrana!")
             else:
-                print("Przegrana")
+                print("Przegrana!")
             
             self.newGame()
