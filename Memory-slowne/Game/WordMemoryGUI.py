@@ -158,8 +158,8 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
     def _onSettingsDialogAccepted(self):
         settings = self.settingsDialog._getSettings()
-        print("Accepted")
-        print(settings)
+        #print("Accepted")
+        #print(settings)
         self.game.setDifficulty(settings["difficulty"])
         self.game.setNickname(settings["nickname"])
         self.game.setNumberOfCorrectAnswers(settings["numberOfCorrectAnswers"])
@@ -172,8 +172,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             self.newGame()
     
     def _onSettingsDialogRejected(self):
-        print("Rejected")
-        print(self.settingsDialog._getSettings())
+        pass
+        #print("Rejected")
+        #print(self.settingsDialog._getSettings())
     
     def _onMyStatisticsClicked(self):
         self.statisticsDialog.showPlayerStatistics(self.settingsDialog._getSettings()["nickname"])
@@ -189,6 +190,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
     def newGame(self):
         self.startButton.show()
+        self.timerLabel2.show()
+
+        self.timerLabel1.setText("Czas:")
         self.timerLabel2.setText("0:00")
         
         self.timer.stop()
@@ -211,7 +215,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             self.buttonList[i].show()
             i += 1
         
-        print("Correct: ", self.game.getCorrectAnswers())
+        #print("Correct: ", self.game.getCorrectAnswers())
 
         buttonListLen = len(self.buttonList)
 
@@ -223,18 +227,19 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.buttonList[btnNum].clicked.disconnect() 
         self.buttonList[btnNum].clicked.connect(lambda : None)
 
-        print("Clicked button!")
+        #print("Clicked button!")
         self.buttonList[btnNum].setStyleSheet(self.btnNotClickableStyleSheet)
 
         self.game.addPlayerAnswer(self.buttonList[btnNum].text())
         
         if self.game.isGameFinished():
+            self.timerLabel2.hide()
             if self.game.playerWin():
-                print("Wygrana!")
+                self.timerLabel1.setText("Wygrana!")
             else:
-                print("Przegrana!")
+                self.timerLabel1.setText("Przegrana!")
             self.showCorrectAnswers()
-            
+
             self.timer.stop()
             try: self.timer.disconnect()
             except Exception: pass
