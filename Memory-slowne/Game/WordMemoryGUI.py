@@ -15,6 +15,9 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.helpDialog = Game.HelpDialog.HelpDialog()
         self.statisticsDialog = Game.StatisticsDialog.StatisticsDialog()
 
+        self.btnClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; } QPushButton:hover { color: red; }"
+        self.btnNotClickableStyleSheet = "QPushButton { font-size: 20px; background-color: #0e3aa9; color: white; border-radius: 4px; padding: 5px; }"
+
         self._initUI()
 
         if self._initGameLogic() == False:
@@ -72,9 +75,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
         for i in range(0, len(self.buttonList)):
             self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
-            self.buttonList[i].setStyleSheet(
-                "QPushButton { font-size: 20px; background-color: #215ccb; color: white; border-radius: 4px; padding: 5px; } QPushButton:hover { color: red; }"
-            )
+            self.buttonList[i].setStyleSheet(self.btnClickableStyleSheet)
             self.buttonList[i].setCursor(PyQt5.QtGui.QCursor(PyQt5.QtCore.Qt.PointingHandCursor))
             self.gameGridLayout.addWidget(self.buttonList[i], i // 5, i % 5)
 
@@ -128,6 +129,7 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
         self.newGameAction = PyQt5.QtWidgets.QAction("&Nowa Gra", self)
         self.settingsAction = PyQt5.QtWidgets.QAction("&Ustawienia", self)
         self.exitAction = PyQt5.QtWidgets.QAction("&Wyjście", self)
+        self.newGameAction.triggered.connect(self.newGame)
         self.exitAction.triggered.connect(self.close)
         self.settingsAction.triggered.connect(self.settingsDialog.show)
 
@@ -173,6 +175,10 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
 
     def newGame(self):
         self.game.shuffleWords()
+        for i in range(len(self.buttonList)):
+            self.buttonList[i].clicked.disconnect() 
+            self.buttonList[i].clicked.connect(functools.partial(self._onClickButton, i))
+            self.buttonList[i].setStyleSheet(self.btnClickableStyleSheet)
         
         i = 0
         for x in self.game.getAllAnswers():
@@ -189,6 +195,12 @@ class WordMemoryGUI(PyQt5.QtWidgets.QMainWindow):
             i += 1
 
     def _onClickButton(self, btnNum):
+        self.buttonList[btnNum].clicked.disconnect() 
+        self.buttonList[btnNum].clicked.connect(lambda : None)
+
+        print("Clicked button!")
+        self.buttonList[btnNum].setStyleSheet(self.btnNotClickableStyleSheet)
+
         self.game.addPlayerAnswer(self.buttonList[btnNum].text())
         
         if self.game.isGameFinished():
