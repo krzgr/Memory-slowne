@@ -18,11 +18,3 @@ pip install PyQt5
 ```
 ### Uruchomienie gry
 Aby uruchomić grę należy wejść do katalogu _Memory-slowne_ i uruchomić _\_\_main\_\_.py_.
-Ewentualnie z poziomu terminala, będąc w katalogu głównym projektu, wykonać komendę:
-```bash
-python Memory-slowne
-```
-lub
-```bash
-python3 Memory-slowne
-```
