@@ -17,4 +17,4 @@ Aby zainstalować bibliotekę PyQt5 należy w terminalu wpisać polecenie:
 pip install PyQt5
 ```
 ### Uruchomienie gry
-Aby uruchomić grę należy wejść do katalogu _Memory-slowne_ i uruchomić _\_\_main\_\_.py_.
+Aby uruchomić grę należy wejść do katalogu _Memory-slowne_ i uruchomić _\_\_main\_\_.pyw_.
